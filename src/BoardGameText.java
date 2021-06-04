@@ -14,27 +14,17 @@ public class BoardGameText {
         int input, xIn, yIn;
 
         //data structure
-        int[][] board =
-        {{0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
-        {2, 0, 2, 0, 2, 0, 2, 0, 2, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0}};
+        DataStructure dataStructure= new DataStructure();
 
 
         while (playing) {
 
             //prints out data structure
-            for (int x = 0; x < 10; x++) {
+            for (int y = 0; y < 10; y++) {
                 System.out.println();
-                for (int y = 0; y < 10; y++) {
+                for (int x = 0; x < 10; x++) {
 
-                    System.out.print(board[y][x] + "  ");
+                    System.out.print(dataStructure.getElement(x, y) + "  ");
                 }
             }
 
@@ -56,16 +46,16 @@ public class BoardGameText {
                 yIn=scan.nextInt();
 
                 //if there is something there, remove it
-                if(board[xIn][yIn]==1 || (board[xIn][yIn]==2)){
-                    board[xIn][yIn] = 0;
+                if((dataStructure.getElement(xIn, yIn)==1 || (dataStructure.getElement(xIn, yIn)==2))){
+                    dataStructure.setElement(xIn, yIn, 0);
                 }
 
                 //if it is empty, add color based on which color is selected
                 else if(side){
-                    board[xIn][yIn]=1;
+                    dataStructure.setElement(xIn, yIn, 1);
                 }
                 else {
-                    board[xIn][yIn]=2;
+                    dataStructure.setElement(xIn, yIn, 2);
                 }
             }
 
