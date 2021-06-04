@@ -13,21 +13,12 @@ import javafx.stage.Stage;
 
 public class BoardGameGUI extends Application {
 
+    DataStructure dataStructure= new DataStructure();
+
     //variables are moved to class scope for GUI
     int xGridCoordinate,yGridCoordinate;
     boolean side = true;
     String guiOutputText;
-    int[][] board =
-    {{0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
-    {2, 0, 2, 0, 2, 0, 2, 0, 2, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-    {1, 0, 1, 0, 1, 0, 1, 0, 1, 0}};
 
     //group for GUI elements
     Pane root = new Pane();
@@ -50,7 +41,7 @@ public class BoardGameGUI extends Application {
         scene.setOnMousePressed(this::processMousePressed);
 
         //updater method first run here to add initial GUI elements
-        updater(board,root,"program output...");
+        updater(dataStructure.getDataStructure(),root,"program output...");
     }
 
 
@@ -67,15 +58,15 @@ public class BoardGameGUI extends Application {
             yGridCoordinate = (int) (mouseEvent.getY() - 20) / 100;
 
         //if there is something there, remove it
-        if (board[xGridCoordinate][yGridCoordinate] == 1 || board[xGridCoordinate][yGridCoordinate] == 2) {
-            board[xGridCoordinate][yGridCoordinate] = 0;
+        if (dataStructure.getElement(xGridCoordinate, yGridCoordinate) == 1 || dataStructure.getElement(xGridCoordinate, yGridCoordinate) == 2) {
+            dataStructure.setElement(xGridCoordinate, yGridCoordinate,0 );
         }
 
         //if it is empty, add color based on which color is selected
         else if (side) {
-            board[xGridCoordinate][yGridCoordinate] = 1;
+            dataStructure.setElement(xGridCoordinate, yGridCoordinate, 1);
         } else {
-            board[xGridCoordinate][yGridCoordinate] = 2;
+            dataStructure.setElement(xGridCoordinate, yGridCoordinate, 2);
         }
 
         //makes string from data structure to display in the GUI
@@ -85,15 +76,15 @@ public class BoardGameGUI extends Application {
             guiOutputText = guiOutputText.concat("\n");
             for (int x = 0; x < 10; x++) {
 
-                System.out.print(board[x][y] + "  ");
-                guiOutputText = guiOutputText.concat(board[x][y] + "  ");
+                System.out.print(dataStructure.getElement(x, y) + "  ");
+                guiOutputText = guiOutputText.concat(dataStructure.getElement(x, y) + "  ");
             }
         }
         System.out.println("\n" + xGridCoordinate + "," + yGridCoordinate);
         guiOutputText = guiOutputText.concat("\n\n" + xGridCoordinate + "," + yGridCoordinate);
 
         //runs updater on every click to bring DataStructure changes into the GUI
-        updater(board, root, guiOutputText);
+        updater(dataStructure.getDataStructure(), root, guiOutputText);
     }
     }
 

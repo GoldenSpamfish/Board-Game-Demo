@@ -37,7 +37,7 @@ public class TemplateGUI extends Application {
         primaryStage.show();
 
         //updater method first run here to add initial GUI elements
-        updater(DataStructure,root,"program output...");
+        updater(DataStructure,root,"program output...\nclick to show/hide box");
     }
 
     //mouse handler controls most interaction with the board
@@ -49,7 +49,7 @@ public class TemplateGUI extends Application {
 
             //demonstrates text output window
             // text output is useful if a parallel text console does not exist
-            guiOutputText = x+","+y;
+            guiOutputText = x+","+y +"\nclick to show/hide box";
 
             //edits data structure on every mouse press
             //makes square disappear and reappear
