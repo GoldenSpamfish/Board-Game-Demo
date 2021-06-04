@@ -14,7 +14,7 @@ public class TemplateGUI extends Application {
     //initialization Section
     String guiOutputText;
     Pane root = new Pane();
-    int[] DataStructure ={0,1,2,3,4};
+    DataStructure dataStructure= new DataStructure();
     String doThing;
 
     //only needed to launch the JavaFX application
@@ -37,7 +37,7 @@ public class TemplateGUI extends Application {
         primaryStage.show();
 
         //updater method first run here to add initial GUI elements
-        updater(DataStructure,root,"program output...\nclick to show/hide box");
+        updater(dataStructure.getDataStructure(),root,"program output...\nclick to show/hide box");
     }
 
     //mouse handler controls most interaction with the board
@@ -53,17 +53,20 @@ public class TemplateGUI extends Application {
 
             //edits data structure on every mouse press
             //makes square disappear and reappear
-            if (DataStructure[0]==0)
-            DataStructure[0]=1;
-            else if (DataStructure[0]==1)
-            DataStructure[0]=0;
+            if (dataStructure.getElement(0,0)==0) {
+                dataStructure.setElement(0, 0, 1);
+            }
+
+            else if (dataStructure.getElement(0,0)==1){
+                dataStructure.setElement(0,0,0);
+            }
 
             //runs updater on every click to bring DataStructure changes into the GUI
-            updater(DataStructure, root, guiOutputText);
+            updater(dataStructure.getDataStructure(), root, guiOutputText);
     }
 
     //all GUI elements are added with this every time something changes
-    public void updater (int[] DataStructure, Pane root, String message) {
+    public void updater (int[][] DataStructure, Pane root, String message) {
 
         //empties root to prevent memory buildup
         root.getChildren().clear();
@@ -86,7 +89,7 @@ public class TemplateGUI extends Application {
         root.getChildren().add(control);
 
         //checks data structure and uses it to decide to display a box
-        if (DataStructure[0] == 0){
+        if (dataStructure.getElement(0,0) == 0){
             Rectangle gridBox = new Rectangle(500, 500,100,100);
             root.getChildren().add(gridBox);
         }
