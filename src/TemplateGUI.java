@@ -1,8 +1,11 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -15,7 +18,7 @@ public class TemplateGUI extends Application {
     String guiOutputText;
     Pane root = new Pane();
     DataStructure dataStructure= new DataStructure();
-    String doThing;
+    boolean toggle=true;
 
     //only needed to launch the JavaFX application
     public static void main(String[] args) {
@@ -37,7 +40,7 @@ public class TemplateGUI extends Application {
         primaryStage.show();
 
         //updater method first run here to add initial GUI elements
-        updater(dataStructure.getDataStructure(),root,"program output...\nclick to show/hide box");
+        updater(root,"program output...\nclick to show/hide box");
     }
 
     //mouse handler controls most interaction with the board
@@ -49,7 +52,7 @@ public class TemplateGUI extends Application {
 
             //demonstrates text output window
             // text output is useful if a parallel text console does not exist
-            guiOutputText = x+","+y +"\nclick to show/hide box";
+            guiOutputText = "Coordinates of click: "+x+","+y +"\nclick to show/hide box";
 
             //edits data structure on every mouse press
             //makes square disappear and reappear
@@ -62,11 +65,17 @@ public class TemplateGUI extends Application {
             }
 
             //runs updater on every click to bring DataStructure changes into the GUI
-            updater(dataStructure.getDataStructure(), root, guiOutputText);
+            updater(root, guiOutputText);
+    }
+
+    //event handler for button
+    private void buttonHandle(ActionEvent event) {
+        toggle=!toggle;
+        updater(root,guiOutputText+"\ndot toggled!");
     }
 
     //all GUI elements are added with this every time something changes
-    public void updater (int[][] DataStructure, Pane root, String message) {
+    public void updater (Pane root, String message) {
 
         //empties root to prevent memory buildup
         root.getChildren().clear();
@@ -80,13 +89,20 @@ public class TemplateGUI extends Application {
         Button control = new Button("Button");
         //position, size, and font
         control.setLayoutX(1100);
-        control.setLayoutY(400);
+        control.setLayoutY(420);
         control.setPrefSize(300,40);
         control.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
         //decides what happens when the button is clicked
-        //thing being done goes after the -> (lambda)
-        control.setOnAction(event -> doThing="do thing on button press");
+        //thing it should do goes in buttonHandle method
+        control.setOnAction(this::buttonHandle);
         root.getChildren().add(control);
+
+        //uses effect of button event
+        if (toggle){
+            Circle toggleIndicator = new Circle(1250, 550,45);
+            toggleIndicator.setFill(Color.GREEN);
+            root.getChildren().add(toggleIndicator);
+        }
 
         //checks data structure and uses it to decide to display a box
         if (dataStructure.getElement(0,0) == 0){

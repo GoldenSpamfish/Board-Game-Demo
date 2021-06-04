@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -41,7 +42,7 @@ public class BoardGameGUI extends Application {
         scene.setOnMousePressed(this::processMousePressed);
 
         //updater method first run here to add initial GUI elements
-        updater(dataStructure.getDataStructure(),root,"program output...");
+        updater(root,"program output...");
     }
 
 
@@ -72,11 +73,8 @@ public class BoardGameGUI extends Application {
         //makes string from data structure to display in the GUI
         //simultaneously out-prints for bug fixing and those with better IDE's
         for (int y = 0; y < 10; y++) {
-            System.out.println();
             guiOutputText = guiOutputText.concat("\n");
             for (int x = 0; x < 10; x++) {
-
-                System.out.print(dataStructure.getElement(x, y) + "  ");
                 guiOutputText = guiOutputText.concat(dataStructure.getElement(x, y) + "  ");
             }
         }
@@ -84,12 +82,18 @@ public class BoardGameGUI extends Application {
         guiOutputText = guiOutputText.concat("\n\n" + xGridCoordinate + "," + yGridCoordinate);
 
         //runs updater on every click to bring DataStructure changes into the GUI
-        updater(dataStructure.getDataStructure(), root, guiOutputText);
+        updater(root, guiOutputText);
     }
     }
 
+    //event handler for button
+    private void buttonHandle(ActionEvent event) {
+        side=!side;
+        updater(root,guiOutputText+"\nside changed");
+    }
+
     //all GUI elements are added with this every time something changes
-    public void updater (int[][] dataStructure, Pane root, String message) {
+    public void updater (Pane root, String message) {
 
         //empties root to prevent memory buildup
         root.getChildren().clear();
@@ -103,12 +107,12 @@ public class BoardGameGUI extends Application {
         Button control = new Button("Change color");
         //position, size, and font
         control.setLayoutX(1100);
-        control.setLayoutY(400);
+        control.setLayoutY(420);
         control.setPrefSize(300,40);
         control.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
         //decides what happens when the button is clicked
         // thing being done goes after the -> (lambda)
-        control.setOnAction(event -> side=!side);
+        control.setOnAction(this::buttonHandle);
         root.getChildren().add(control);
 
         //uses for loop to create board
@@ -124,14 +128,14 @@ public class BoardGameGUI extends Application {
 
                 //uses data structure to check whether to add circles
                 //functionally the same as text version board printing
-                if(dataStructure[x][y]==1){
+                if(dataStructure.getElement(x,y)==1){
                     Circle token = new Circle(100*x+20+50, 100*y+20+50,45);
                     token.setStroke(Color.BLACK);
                     token.setStrokeWidth(4);
                     token.setFill(Color.WHITE);
                     root.getChildren().add(token);
                 }
-                else if(dataStructure[x][y]==2){
+                else if(dataStructure.getElement(x,y)==2){
                     Circle token = new Circle(100*x+20+50, 100*y+20+50,45);
                     token.setStroke(Color.BLACK);
                     token.setStrokeWidth(4);
